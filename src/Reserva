@@ -1,0 +1,35 @@
+// =====================================================
+// RESERVA.JAVA - Implementado por Adriana Chalavarri
+// =====================================================
+public class Reserva {
+    // Atributos privados
+    private String cliente;
+    private Habitacion habitacion;
+    
+    // Constructor
+    public Reserva(String cliente, Habitacion habitacion) {
+        this.cliente = cliente;
+        this.habitacion = habitacion;
+        // Al crear la reserva, marcar la habitación como ocupada
+        this.habitacion.reservar();
+    }
+    
+    // Métodos getter
+    public String getCliente() {
+        return cliente;
+    }
+    
+    public int getNumeroHabitacion() {
+        return habitacion.getNumero();
+    }
+    
+    public Habitacion getHabitacion() {
+        return habitacion;
+    }
+    
+    // Método toString para facilitar la visualización
+    @Override
+    public String toString() {
+        return "Reserva - Cliente: " + cliente + ", Habitación: " + habitacion.getNumero();
+    }
+}
