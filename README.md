@@ -92,4 +92,4 @@ Las evidencias del funcionamiento del sistema se encuentran en la carpeta `evide
 - **Funcionalidades completas**
 
 ---
-*Desarrollado como parte del curso de Programación II - Universidad Tecnológica Indoamérica*
+*Desarrollado como parte del curso de Programación II - Universidad de las Américas*
