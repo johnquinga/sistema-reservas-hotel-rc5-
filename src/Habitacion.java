@@ -1,67 +1,38 @@
-// Habitacion.java
+// =====================================================
+// HABITACION.JAVA - Implementado por Jonathan Quinga
+// =====================================================
 public class Habitacion {
+    // Atributos privados (Encapsulación)
     private int numero;
     private boolean disponible;
-
+    
+    // Constructor
     public Habitacion(int numero) {
         this.numero = numero;
-        this.disponible = true;
+        this.disponible = true; // Por defecto, todas las habitaciones están disponibles
     }
-
+    
+    // Métodos getter (Acceso controlado a los datos)
     public int getNumero() {
         return numero;
     }
-
+    
     public boolean estaDisponible() {
         return disponible;
     }
-
+    
+    // Métodos para cambiar el estado de la habitación
     public void reservar() {
         this.disponible = false;
     }
-
+    
     public void liberar() {
         this.disponible = true;
     }
-
+    
+    // Método toString para facilitar la visualización
     @Override
     public String toString() {
         return "Habitación " + numero + " - " + (disponible ? "Disponible" : "Ocupada");
-    }
-}
-
-// Reserva.java
-public class Reserva {
-    private String cliente;
-    private Habitacion habitacion;
-
-    public Reserva(String cliente, Habitacion habitacion) {
-        if (cliente == null || cliente.trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre del cliente no puede estar vacío");
-        }
-        if (habitacion == null) {
-            throw new IllegalArgumentException("La habitación no puede ser null");
-        }
-        
-        this.cliente = cliente.trim();
-        this.habitacion = habitacion;
-        this.habitacion.reservar();
-    }
-
-    public String getCliente() {
-        return cliente;
-    }
-
-    public int getNumeroHabitacion() {
-        return habitacion.getNumero();
-    }
-
-    public Habitacion getHabitacion() {
-        return habitacion;
-    }
-
-    @Override
-    public String toString() {
-        return "Reserva de " + cliente + " en habitación " + habitacion.getNumero();
     }
 }
