@@ -65,7 +65,6 @@ java -cp src Main
 ## 📸 Evidencias de Funcionamiento
 Las evidencias del funcionamiento del sistema se encuentran en la carpeta `evidencias/`:
 - Capturas de pantalla del proceso completo
-- Video demostrativo del sistema en funcionamiento
 
 ## 🎯 Cumplimiento de Objetivos RC5
 - ✅ **Planteamiento de Roles:** Roles definidos según habilidades individuales
