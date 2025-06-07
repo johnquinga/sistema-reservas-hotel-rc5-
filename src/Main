@@ -1,0 +1,60 @@
+// =====================================================
+// MAIN.JAVA - Implementado por Adriana Chalavarri
+// =====================================================
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        // Crear instancia del hotel con 5 habitaciones
+        Hotel hotel = new Hotel(5);
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("=== SISTEMA DE GESTIÓN DE RESERVAS DE HOTEL ===\n");
+        
+        // Mostrar estado inicial
+        hotel.mostrarHabitaciones();
+        
+        // DEMOSTRACIÓN DE FUNCIONALIDAD 1: Consultar disponibilidad
+        System.out.println("\n=== PRUEBA: CONSULTAR DISPONIBILIDAD ===");
+        System.out.print("Ingrese número de habitación a consultar (1-5): ");
+        int numeroConsulta = scanner.nextInt();
+        scanner.nextLine(); // Limpiar buffer
+        
+        if (hotel.consultarDisponibilidad(numeroConsulta)) {
+            System.out.println("✓ La habitación " + numeroConsulta + " está DISPONIBLE");
+        } else {
+            System.out.println("✗ La habitación " + numeroConsulta + " NO está disponible");
+        }
+        
+        // DEMOSTRACIÓN DE FUNCIONALIDAD 2: Crear reserva
+        System.out.println("\n=== PRUEBA: CREAR NUEVA RESERVA ===");
+        System.out.print("Ingrese su nombre: ");
+        String nombreCliente = scanner.nextLine();
+        
+        System.out.print("Ingrese número de habitación a reservar (1-5): ");
+        int numeroReserva = scanner.nextInt();
+        
+        if (hotel.crearReserva(nombreCliente, numeroReserva)) {
+            System.out.println("✓ Reserva creada exitosamente para " + nombreCliente);
+        } else {
+            System.out.println("✗ No se pudo crear la reserva. Habitación no disponible.");
+        }
+        
+        // Mostrar resultados finales
+        hotel.mostrarReservas();
+        hotel.mostrarHabitaciones();
+        
+        // Prueba adicional: Intentar reservar la misma habitación
+        System.out.println("\n=== PRUEBA: VERIFICAR FUNCIONALIDAD ===");
+        System.out.println("Intentando reservar la misma habitación nuevamente...");
+        
+        if (hotel.crearReserva("Cliente Test", numeroReserva)) {
+            System.out.println("✓ Segunda reserva creada");
+        } else {
+            System.out.println("✓ Sistema funcionando correctamente: No permite doble reserva");
+        }
+        
+        scanner.close();
+        System.out.println("\n=== FIN DE LA DEMOSTRACIÓN ===");
+    }
+}
