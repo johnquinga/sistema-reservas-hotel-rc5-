@@ -3,7 +3,6 @@
 ## 📋 Información General
 - **Proyecto:** Sistema de Gestión de Reservas de Hotel
 - **Asignatura:** ISWZ1103 - Programación II
-- **Fecha:** Junio 6, 2025
 - **Modalidad:** Trabajo en Equipo
 
 ## 👥 Integrantes y Roles Asignados
@@ -38,44 +37,39 @@
 
 ## 📅 Cronograma de Desarrollo
 
-### Fase 1: Planificación (Día 1)
-- **Tiempo:** 2 horas
+### Fase 1: Planificación 
 - **Actividades:**
   - Definición de roles según habilidades
   - Diseño de arquitectura del sistema
   - Planificación de clases y métodos
   - Distribución de tareas
 
-### Fase 2: Desarrollo Backend (Día 1-2)
+### Fase 2: Desarrollo Backend 
 - **Responsable:** Jonathan Quinga
-- **Tiempo:** 4 horas
 - **Actividades:**
   - Implementar clase `Habitacion.java`
   - Implementar clase `Hotel.java`
   - Definir métodos de gestión de reservas
   - Implementar lógica de negocio
 
-### Fase 3: Desarrollo Frontend (Día 2)
+### Fase 3: Desarrollo Frontend 
 - **Responsable:** Adriana Chalavarri
-- **Tiempo:** 4 horas
 - **Actividades:**
   - Implementar clase `Reserva.java`
   - Implementar clase `Main.java`
   - Diseñar interfaz de usuario
   - Implementar validaciones
 
-### Fase 4: Integración y Testing (Día 2-3)
+### Fase 4: Integración y Testing 
 - **Responsables:** Ambos
-- **Tiempo:** 3 horas
 - **Actividades:**
   - Integración de componentes
   - Pruebas funcionales
   - Corrección de errores
   - Testing de casos extremos
 
-### Fase 5: Documentación (Día 3)
+### Fase 5: Documentación 
 - **Responsables:** Ambos
-- **Tiempo:** 2 horas
 - **Actividades:**
   - Documentación del código
   - Creación del README
@@ -108,11 +102,10 @@
 ## 🔄 Metodología de Trabajo
 
 ### Coordinación:
-- **Reuniones diarias:** 30 minutos para sincronización
 - **Revisión cruzada:** Cada miembro revisa el código del otro
 - **Comunicación:** WhatsApp y Discord para coordinación
 
-### Control de Calidad:
+### Control de Trabajo:
 - **Revisión de código:** Antes de cada commit
 - **Testing conjunto:** Pruebas colaborativas
 - **Documentación:** Comentarios detallados en el código
