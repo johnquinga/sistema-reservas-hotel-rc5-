@@ -1,1 +1,30 @@
+package quinga_chalavarri;
 
+/**
+ * Enum para tipos de habitación con precios y capacidades
+ */
+public enum TipoHabitacion {
+    SIMPLE("Simple", 1, 50.0),
+    DOBLE("Doble", 2, 80.0),
+    SUITE("Suite", 4, 150.0),
+    PRESIDENCIAL("Presidencial", 6, 300.0);
+
+    private final String nombre;
+    private final int capacidad;
+    private final double precioBase;
+
+    TipoHabitacion(String nombre, int capacidad, double precioBase) {
+        this.nombre = nombre;
+        this.capacidad = capacidad;
+        this.precioBase = precioBase;
+    }
+
+    public String getNombre() { return nombre; }
+    public int getCapacidad() { return capacidad; }
+    public double getPrecioBase() { return precioBase; }
+
+    @Override
+    public String toString() {
+        return nombre + " (Cap: " + capacidad + ", $" + precioBase + ")";
+    }
+}
