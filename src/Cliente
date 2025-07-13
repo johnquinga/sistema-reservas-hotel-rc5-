@@ -1,0 +1,103 @@
+package quinga_chalavarri;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+
+/**
+ * Clase Cliente con validaciones y manejo de excepciones
+ */
+public class Cliente {
+    private String nombre;
+    private String apellido;
+    private String email;
+    private String telefono;
+    private String cedula;
+    private List<Reserva> historialReservas;
+
+    // Patrones para validación
+    private static final Pattern EMAIL_PATTERN =
+            Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    private static final Pattern TELEFONO_PATTERN =
+            Pattern.compile("^\\+?[0-9]{10,15}$");
+
+    // Constructor con validaciones
+    public Cliente(String nombre, String apellido, String email, String telefono, String cedula)
+            throws ClienteException {
+        setNombre(nombre);
+        setApellido(apellido);
+        setEmail(email);
+        setTelefono(telefono);
+        setCedula(cedula);
+        this.historialReservas = new ArrayList<>();
+    }
+
+    // Métodos setter con validación (Encapsulación)
+    public void setNombre(String nombre) throws ClienteException {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new ClienteException("El nombre no puede estar vacío");
+        }
+        this.nombre = nombre.trim();
+    }
+
+    public void setApellido(String apellido) throws ClienteException {
+        if (apellido == null || apellido.trim().isEmpty()) {
+            throw new ClienteException("El apellido no puede estar vacío");
+        }
+        this.apellido = apellido.trim();
+    }
+
+    public void setEmail(String email) throws ClienteException {
+        if (email == null || !EMAIL_PATTERN.matcher(email).matches()) {
+            throw new ClienteException("Email inválido: " + email);
+        }
+        this.email = email;
+    }
+
+    public void setTelefono(String telefono) throws ClienteException {
+        if (telefono == null || !TELEFONO_PATTERN.matcher(telefono).matches()) {
+            throw new ClienteException("Teléfono inválido: " + telefono);
+        }
+        this.telefono = telefono;
+    }
+
+    public void setCedula(String cedula) throws ClienteException {
+        if (cedula == null || cedula.trim().isEmpty()) {
+            throw new ClienteException("La cédula no puede estar vacía");
+        }
+        this.cedula = cedula.trim();
+    }
+
+    // Método para agregar reserva al historial
+    public void agregarReserva(Reserva reserva) {
+        historialReservas.add(reserva);
+    }
+
+    // Getters (Encapsulación)
+    public String getNombre() { return nombre; }
+    public String getApellido() { return apellido; }
+    public String getEmail() { return email; }
+    public String getTelefono() { return telefono; }
+    public String getCedula() { return cedula; }
+    public String getNombreCompleto() { return nombre + " " + apellido; }
+    public List<Reserva> getHistorialReservas() { return new ArrayList<>(historialReservas); }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s (Email: %s, Tel: %s)",
+                nombre, apellido, email, telefono);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Cliente cliente = (Cliente) obj;
+        return cedula.equals(cliente.cedula);
+    }
+
+    @Override
+    public int hashCode() {
+        return cedula.hashCode();
+    }
+}
