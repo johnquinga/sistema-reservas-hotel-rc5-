@@ -1,1 +1,46 @@
+package quinga_chalavarri;
 
+import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+/**
+ * Clase ElementoHotel con imports corregidos
+ */
+public class ElementoHotel {
+    private String nombre;
+    private LocalDateTime fechaCreacion;
+    private LocalDate fechaOperacion;
+
+    // Constructor
+    public ElementoHotel(String nombre) {
+        this.nombre = nombre;
+        this.fechaCreacion = LocalDateTime.now();
+        this.fechaOperacion = LocalDate.now();
+    }
+
+    // Getters
+    public String getNombre() {
+        return nombre;
+    }
+
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public LocalDate getFechaOperacion() {
+        return fechaOperacion;
+    }
+
+    // Método para formatear fecha
+    public String getFechaFormateada() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        return fechaCreacion.format(formatter);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ElementoHotel{nombre='%s', fechaCreacion=%s}",
+                nombre, getFechaFormateada());
+    }
+}
