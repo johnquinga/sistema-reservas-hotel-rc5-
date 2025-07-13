@@ -1,26 +1,13 @@
-# Evidencias de Funcionamiento
-
-Esta carpeta contiene las evidencias del sistema en funcionamiento:
-//Código Habitacion
-![image](https://github.com/user-attachments/assets/58a0d98b-adbe-4cc1-9cf5-97cb8063ce9b)
-
-//Código Reserva 
-![image](https://github.com/user-attachments/assets/97d46352-2983-450a-a3fd-850f3157d064)
-
-//Código Hotel
-![image](https://github.com/user-attachments/assets/ec97850b-a83b-4fce-a10a-17341c125021)
-
-//Código Main
-![image](https://github.com/user-attachments/assets/02cf5b94-bbd7-449e-a02f-a7bf3d9c32e3)
-
+# Imagen en inntelling 
+<img width="1719" height="880" alt="image" src="https://github.com/user-attachments/assets/37a21884-f156-4598-b7f5-a9562cc1a275" />
 ## 📸 Capturas de Pantalla
-// Interface de la programacion 
-![image](https://github.com/user-attachments/assets/04d29daa-bf4d-4668-ad6d-7ebe130174d6)
-//Ingreso de datos
-Jonathan Quinga
-![image](https://github.com/user-attachments/assets/946a32ba-71c1-4b23-bef0-c5a831769f19)
-![image](https://github.com/user-attachments/assets/5886eb9e-1d76-4907-af09-f349f9572a6f)
-Adriana Chalavarri
-![image](https://github.com/user-attachments/assets/542ee173-feec-45c1-b146-d7d84f95a9d4)
-![image](https://github.com/user-attachments/assets/16dea075-8057-40f4-aa76-44c2c6ef0e6a)
-
+<img width="891" height="636" alt="image" src="https://github.com/user-attachments/assets/0d98f9a5-212b-4ae0-9ccf-6761b1db287d" />
+# Imagen de resultados
+<img width="891" height="636" alt="image" src="https://github.com/user-attachments/assets/34168cc4-63bc-4429-85d0-3b390923f640" />
+![Imagen de WhatsApp 2025-07-12 a las 22 50 55_5c629602](https://github.com/user-attachments/assets/7acd8754-e6d6-4e9b-9bc9-893c6df3d99a)
+![Imagen de WhatsApp 2025-07-12 a las 22 53 20_6f050afe](https://github.com/user-attachments/assets/589374d8-67ee-4fcd-97ee-95c288d68d42)
+![Imagen de WhatsApp 2025-07-12 a las 22 54 23_7f97fbf3](https://github.com/user-attachments/assets/7983d3a2-2e6f-4010-9957-189fe2fd1df6)
+![Imagen de WhatsApp 2025-07-12 a las 22 54 42_006c6a4a](https://github.com/user-attachments/assets/cb66c623-6b7c-413e-ad4d-0edd51448a72)
+![Imagen de WhatsApp 2025-07-12 a las 22 55 03_c478dc78](https://github.com/user-attachments/assets/9f4830ea-4793-4561-91a3-aeec4cf832d4)
+![Imagen de WhatsApp 2025-07-12 a las 22 55 31_2fdcc9c9](https://github.com/user-attachments/assets/f3a1ca53-6b03-44b1-bbb9-b25bdd9a6dca)
+![Imagen de WhatsApp 2025-07-12 a las 22 56 01_36bd08f9](https://github.com/user-attachments/assets/0aabb311-6bf2-4f05-a92c-5f57f5623bf1)
