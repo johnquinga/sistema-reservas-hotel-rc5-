@@ -1,4 +1,4 @@
-# Imagen en inntelling 
+# Imagen en intelling 
 <img width="1719" height="880" alt="image" src="https://github.com/user-attachments/assets/37a21884-f156-4598-b7f5-a9562cc1a275" />
 ## 📸 Capturas de Pantalla
 <img width="891" height="636" alt="image" src="https://github.com/user-attachments/assets/0d98f9a5-212b-4ae0-9ccf-6761b1db287d" />
