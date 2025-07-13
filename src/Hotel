@@ -1,71 +1,164 @@
-// =====================================================
-// HOTEL.JAVA - Implementado por Jonathan Quinga
-// =====================================================
-import java.util.ArrayList;
+package quinga_chalavarri;
 
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * Clase Hotel con funcionalidades avanzadas
+ * Implementa colecciones genéricas y streams
+ */
 public class Hotel {
-    // Atributos privados
-    private ArrayList<Habitacion> habitaciones;
-    private ArrayList<Reserva> reservas;
-    
+    private String nombre;
+    private String direccion;
+    private List<Habitacion> habitaciones;
+    private List<Reserva> reservas;
+    private Map<String, Cliente> clientes; // Mapa para búsqueda rápida por cédula
+
     // Constructor
-    public Hotel(int cantidadHabitaciones) {
-        habitaciones = new ArrayList<>();
-        reservas = new ArrayList<>();
-        
-        // Inicializar habitaciones
-        for (int i = 1; i <= cantidadHabitaciones; i++) {
-            habitaciones.add(new Habitacion(i));
-        }
+    public Hotel(String nombre, String direccion) {
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.habitaciones = new ArrayList<>();
+        this.reservas = new ArrayList<>();
+        this.clientes = new HashMap<>();
+
+        // Inicializar habitaciones de ejemplo
+        inicializarHabitaciones();
     }
-    
-    // FUNCIONALIDAD 1: Consultar disponibilidad de una habitación
-    public boolean consultarDisponibilidad(int numeroHabitacion) {
-        for (Habitacion habitacion : habitaciones) {
-            if (habitacion.getNumero() == numeroHabitacion) {
-                return habitacion.estaDisponible();
-            }
+
+    // Método privado para inicializar habitaciones
+    private void inicializarHabitaciones() {
+        // Habitaciones simples (1-3)
+        for (int i = 1; i <= 3; i++) {
+            habitaciones.add(new Habitacion(i, TipoHabitacion.SIMPLE));
         }
-        return false; // Habitación no encontrada
-    }
-    
-    // FUNCIONALIDAD 2: Crear una nueva reserva
-    public boolean crearReserva(String cliente, int numeroHabitacion) {
-        // Buscar la habitación
-        for (Habitacion habitacion : habitaciones) {
-            if (habitacion.getNumero() == numeroHabitacion && habitacion.estaDisponible()) {
-                // Crear la reserva
-                Reserva nuevaReserva = new Reserva(cliente, habitacion);
-                reservas.add(nuevaReserva);
-                return true; // Reserva exitosa
-            }
+
+        // Habitaciones dobles (4-6)
+        for (int i = 4; i <= 6; i++) {
+            habitaciones.add(new Habitacion(i, TipoHabitacion.DOBLE));
         }
-        return false; // No se pudo crear la reserva
+
+        // Suites (7-8)
+        for (int i = 7; i <= 8; i++) {
+            habitaciones.add(new Habitacion(i, TipoHabitacion.SUITE));
+        }
+
+        // Habitación presidencial (9)
+        habitaciones.add(new Habitacion(9, TipoHabitacion.PRESIDENCIAL));
     }
-    
-    // Método para mostrar todas las reservas
+
+    // Método para consultar disponibilidad
+    public boolean consultarDisponibilidad(int numeroHabitacion, LocalDate fecha) {
+        Optional<Habitacion> habitacion = habitaciones.stream()
+                .filter(h -> h.getNumero() == numeroHabitacion)
+                .findFirst();
+
+        return habitacion.map(h -> h.estaDisponible(fecha)).orElse(false);
+    }
+
+    // Método para crear reserva
+    public Reserva crearReserva(String nombre, String apellido, String email,
+                                String telefono, String cedula, int numeroHabitacion,
+                                LocalDate fechaInicio, LocalDate fechaFin)
+            throws ClienteException {
+
+        // Buscar o crear cliente
+        Cliente cliente = clientes.get(cedula);
+        if (cliente == null) {
+            cliente = new Cliente(nombre, apellido, email, telefono, cedula);
+            clientes.put(cedula, cliente);
+        }
+
+        // Buscar habitación
+        Optional<Habitacion> habitacionOpt = habitaciones.stream()
+                .filter(h -> h.getNumero() == numeroHabitacion)
+                .findFirst();
+
+        if (!habitacionOpt.isPresent()) {
+            throw new ClienteException("Habitación no encontrada");
+        }
+
+        Habitacion habitacion = habitacionOpt.get();
+
+        // Verificar disponibilidad
+        if (!habitacion.estaDisponible(fechaInicio)) {
+            throw new ClienteException("Habitación no disponible para las fechas seleccionadas");
+        }
+
+        // Crear reserva
+        Reserva reserva = new Reserva(cliente, habitacion, fechaInicio, fechaFin);
+        reservas.add(reserva);
+
+        return reserva;
+    }
+
+    // Método para buscar habitaciones por tipo (usando genéricos)
+    public List<Habitacion> buscarHabitacionesPorTipo(TipoHabitacion tipo) {
+        return habitaciones.stream()
+                .filter(h -> h.getTipo() == tipo)
+                .collect(Collectors.toList());
+    }
+
+    // Método para obtener estadísticas usando streams
+    public Map<String, Object> obtenerEstadisticas() {
+        Map<String, Object> estadisticas = new HashMap<>();
+
+        // Total de habitaciones por tipo
+        Map<TipoHabitacion, Long> habitacionesPorTipo = habitaciones.stream()
+                .collect(Collectors.groupingBy(
+                        Habitacion::getTipo,
+                        Collectors.counting()
+                ));
+
+        // Reservas por estado
+        Map<EstadoReserva, Long> reservasPorEstado = reservas.stream()
+                .collect(Collectors.groupingBy(
+                        Reserva::getEstado,
+                        Collectors.counting()
+                ));
+
+        // Ingresos totales
+        double ingresosTotales = reservas.stream()
+                .filter(r -> r.getEstado() == EstadoReserva.COMPLETADA)
+                .mapToDouble(Reserva::getPrecioTotal)
+                .sum();
+
+        estadisticas.put("habitacionesPorTipo", habitacionesPorTipo);
+        estadisticas.put("reservasPorEstado", reservasPorEstado);
+        estadisticas.put("ingresosTotales", ingresosTotales);
+        estadisticas.put("totalClientes", clientes.size());
+        estadisticas.put("totalReservas", reservas.size());
+
+        return estadisticas;
+    }
+
+    // Métodos de visualización
+    public void mostrarHabitaciones() {
+        System.out.println("\n=== HABITACIONES DEL HOTEL ===");
+        habitaciones.forEach(System.out::println);
+    }
+
     public void mostrarReservas() {
         System.out.println("\n=== RESERVAS ACTUALES ===");
         if (reservas.isEmpty()) {
             System.out.println("No hay reservas registradas.");
         } else {
-            for (Reserva reserva : reservas) {
-                System.out.println("Cliente: " + reserva.getCliente() + 
-                                 " - Habitación: " + reserva.getNumeroHabitacion());
-            }
+            reservas.forEach(System.out::println);
         }
     }
-    
-    // Método para mostrar estado de habitaciones
-    public void mostrarHabitaciones() {
-        System.out.println("\n=== ESTADO DE HABITACIONES ===");
-        for (Habitacion habitacion : habitaciones) {
-            System.out.println(habitacion.toString());
-        }
+
+    public void mostrarEstadisticas() {
+        System.out.println("\n=== ESTADÍSTICAS DEL HOTEL ===");
+        Map<String, Object> stats = obtenerEstadisticas();
+        stats.forEach((k, v) -> System.out.println(k + ": " + v));
     }
-    
-    // Getter para obtener el número total de habitaciones
-    public int getTotalHabitaciones() {
-        return habitaciones.size();
-    }
+
+    // Getters (Encapsulación)
+    public String getNombre() { return nombre; }
+    public String getDireccion() { return direccion; }
+    public List<Habitacion> getHabitaciones() { return new ArrayList<>(habitaciones); }
+    public List<Reserva> getReservas() { return new ArrayList<>(reservas); }
+    public Collection<Cliente> getClientes() { return new ArrayList<>(clientes.values()); }
+    public int getTotalHabitaciones() { return habitaciones.size(); }
 }
