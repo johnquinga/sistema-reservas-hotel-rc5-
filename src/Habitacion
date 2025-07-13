@@ -1,0 +1,85 @@
+package quinga_chalavarri;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Clase Habitacion con encapsulación y polimorfismo
+ */
+public class Habitacion {
+    private int numero;
+    private TipoHabitacion tipo;
+    private boolean disponible;
+    private List<LocalDate> fechasReservadas;
+    private double precioPersonalizado;
+
+    // Constructor principal
+    public Habitacion(int numero, TipoHabitacion tipo) {
+        this.numero = numero;
+        this.tipo = tipo;
+        this.disponible = true;
+        this.fechasReservadas = new ArrayList<>();
+        this.precioPersonalizado = tipo.getPrecioBase();
+    }
+
+    // Sobrecarga de constructor con precio personalizado
+    public Habitacion(int numero, TipoHabitacion tipo, double precioPersonalizado) {
+        this(numero, tipo);
+        this.precioPersonalizado = precioPersonalizado;
+    }
+
+    // Método para verificar disponibilidad en una fecha
+    public boolean estaDisponible(LocalDate fecha) {
+        return disponible && !fechasReservadas.contains(fecha);
+    }
+
+    // Método para reservar habitación
+    public void reservar(LocalDate fechaInicio, LocalDate fechaFin) {
+        LocalDate fecha = fechaInicio;
+        while (!fecha.isAfter(fechaFin)) {
+            fechasReservadas.add(fecha);
+            fecha = fecha.plusDays(1);
+        }
+        this.disponible = false;
+    }
+
+    // Método para liberar habitación
+    public void liberar() {
+        this.disponible = true;
+        this.fechasReservadas.clear();
+    }
+
+    // Método para obtener información completa
+    public String getInformacionCompleta() {
+        return String.format("Habitación %d - %s - $%.2f - %s",
+                numero, tipo.getNombre(), precioPersonalizado,
+                disponible ? "Disponible" : "Ocupada");
+    }
+
+    // Getters y setters (Encapsulación)
+    public int getNumero() { return numero; }
+    public TipoHabitacion getTipo() { return tipo; }
+    public boolean estaDisponible() { return disponible; }
+    public double getPrecio() { return precioPersonalizado; }
+    public List<LocalDate> getFechasReservadas() { return new ArrayList<>(fechasReservadas); }
+
+    // Método equals para comparación
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Habitacion that = (Habitacion) obj;
+        return numero == that.numero;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(numero);
+    }
+
+    @Override
+    public String toString() {
+        return getInformacionCompleta();
+    }
+}
