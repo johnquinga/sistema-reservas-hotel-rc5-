@@ -1,60 +1,279 @@
-// =====================================================
-// MAIN.JAVA - Implementado por Adriana Chalavarri
-// =====================================================
+package quinga_chalavarri;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Clase principal del sistema de reservas de hotel
+ * Implementa interfaz de usuario por consola
+ */
 public class Main {
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static Hotel hotel;
+    
     public static void main(String[] args) {
-        // Crear instancia del hotel con 5 habitaciones
-        Hotel hotel = new Hotel(5);
-        Scanner scanner = new Scanner(System.in);
+        // Inicializar hotel
+        hotel = new Hotel("Hotel Quinga Chalavarri", "Av. Principal 123, Quito");
         
-        System.out.println("=== SISTEMA DE GESTIÓN DE RESERVAS DE HOTEL ===\n");
+        System.out.println("=".repeat(50));
+        System.out.println("🏨 BIENVENIDO AL SISTEMA DE RESERVAS");
+        System.out.println("🏨 " + hotel.getNombre());
+        System.out.println("📍 " + hotel.getDireccion());
+        System.out.println("=".repeat(50));
         
-        // Mostrar estado inicial
-        hotel.mostrarHabitaciones();
+        // Datos de ejemplo para demostrar el sistema
+        inicializarDatosEjemplo();
         
-        // DEMOSTRACIÓN DE FUNCIONALIDAD 1: Consultar disponibilidad
-        System.out.println("\n=== PRUEBA: CONSULTAR DISPONIBILIDAD ===");
-        System.out.print("Ingrese número de habitación a consultar (1-5): ");
-        int numeroConsulta = scanner.nextInt();
-        scanner.nextLine(); // Limpiar buffer
-        
-        if (hotel.consultarDisponibilidad(numeroConsulta)) {
-            System.out.println("✓ La habitación " + numeroConsulta + " está DISPONIBLE");
-        } else {
-            System.out.println("✗ La habitación " + numeroConsulta + " NO está disponible");
-        }
-        
-        // DEMOSTRACIÓN DE FUNCIONALIDAD 2: Crear reserva
-        System.out.println("\n=== PRUEBA: CREAR NUEVA RESERVA ===");
-        System.out.print("Ingrese su nombre: ");
-        String nombreCliente = scanner.nextLine();
-        
-        System.out.print("Ingrese número de habitación a reservar (1-5): ");
-        int numeroReserva = scanner.nextInt();
-        
-        if (hotel.crearReserva(nombreCliente, numeroReserva)) {
-            System.out.println("✓ Reserva creada exitosamente para " + nombreCliente);
-        } else {
-            System.out.println("✗ No se pudo crear la reserva. Habitación no disponible.");
-        }
-        
-        // Mostrar resultados finales
-        hotel.mostrarReservas();
-        hotel.mostrarHabitaciones();
-        
-        // Prueba adicional: Intentar reservar la misma habitación
-        System.out.println("\n=== PRUEBA: VERIFICAR FUNCIONALIDAD ===");
-        System.out.println("Intentando reservar la misma habitación nuevamente...");
-        
-        if (hotel.crearReserva("Cliente Test", numeroReserva)) {
-            System.out.println("✓ Segunda reserva creada");
-        } else {
-            System.out.println("✓ Sistema funcionando correctamente: No permite doble reserva");
+        // Menú principal
+        boolean continuar = true;
+        while (continuar) {
+            mostrarMenu();
+            int opcion = leerOpcion();
+            
+            switch (opcion) {
+                case 1:
+                    consultarDisponibilidad();
+                    break;
+                case 2:
+                    crearReserva();
+                    break;
+                case 3:
+                    hotel.mostrarHabitaciones();
+                    break;
+                case 4:
+                    hotel.mostrarReservas();
+                    break;
+                case 5:
+                    mostrarHabitacionesPorTipo();
+                    break;
+                case 6:
+                    hotel.mostrarEstadisticas();
+                    break;
+                case 7:
+                    mostrarClientes();
+                    break;
+                case 8:
+                    demostrarFuncionalidades();
+                    break;
+                case 0:
+                    System.out.println("¡Gracias por usar nuestro sistema!");
+                    continuar = false;
+                    break;
+                default:
+                    System.out.println("⚠️ Opción no válida. Intente nuevamente.");
+            }
+            
+            if (continuar) {
+                System.out.println("\nPresione Enter para continuar...");
+                scanner.nextLine();
+            }
         }
         
         scanner.close();
-        System.out.println("\n=== FIN DE LA DEMOSTRACIÓN ===");
+    }
+    
+    private static void mostrarMenu() {
+        System.out.println("\n" + "=".repeat(40));
+        System.out.println("🏨 MENÚ PRINCIPAL");
+        System.out.println("=".repeat(40));
+        System.out.println("1. 🔍 Consultar disponibilidad");
+        System.out.println("2. 📝 Crear reserva");
+        System.out.println("3. 🏠 Ver habitaciones");
+        System.out.println("4. 📋 Ver reservas");
+        System.out.println("5. 🏷️ Buscar habitaciones por tipo");
+        System.out.println("6. 📊 Ver estadísticas");
+        System.out.println("7. 👥 Ver clientes");
+        System.out.println("8. 🚀 Demostrar funcionalidades");
+        System.out.println("0. 🚪 Salir");
+        System.out.println("=".repeat(40));
+        System.out.print("Seleccione una opción: ");
+    }
+    
+    private static int leerOpcion() {
+        try {
+            String input = scanner.nextLine();
+            return Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+    
+    private static void consultarDisponibilidad() {
+        System.out.println("\n🔍 CONSULTAR DISPONIBILIDAD");
+        System.out.println("-".repeat(30));
+        
+        try {
+            System.out.print("Número de habitación (1-9): ");
+            int numero = Integer.parseInt(scanner.nextLine());
+            
+            System.out.print("Fecha (yyyy-MM-dd): ");
+            String fechaStr = scanner.nextLine();
+            LocalDate fecha = LocalDate.parse(fechaStr, formatter);
+            
+            boolean disponible = hotel.consultarDisponibilidad(numero, fecha);
+            
+            if (disponible) {
+                System.out.println("✅ Habitación " + numero + " DISPONIBLE para " + fecha);
+            } else {
+                System.out.println("❌ Habitación " + numero + " NO DISPONIBLE para " + fecha);
+            }
+            
+        } catch (NumberFormatException e) {
+            System.out.println("❌ Error: Número de habitación inválido");
+        } catch (DateTimeParseException e) {
+            System.out.println("❌ Error: Formato de fecha inválido (use yyyy-MM-dd)");
+        }
+    }
+    
+    private static void crearReserva() {
+        System.out.println("\n📝 CREAR NUEVA RESERVA");
+        System.out.println("-".repeat(30));
+        
+        try {
+            System.out.print("Nombre: ");
+            String nombre = scanner.nextLine();
+            
+            System.out.print("Apellido: ");
+            String apellido = scanner.nextLine();
+            
+            System.out.print("Email: ");
+            String email = scanner.nextLine();
+            
+            System.out.print("Teléfono: ");
+            String telefono = scanner.nextLine();
+            
+            System.out.print("Cédula: ");
+            String cedula = scanner.nextLine();
+            
+            System.out.print("Número de habitación (1-9): ");
+            int numeroHabitacion = Integer.parseInt(scanner.nextLine());
+            
+            System.out.print("Fecha de inicio (yyyy-MM-dd): ");
+            String fechaInicioStr = scanner.nextLine();
+            LocalDate fechaInicio = LocalDate.parse(fechaInicioStr, formatter);
+            
+            System.out.print("Fecha de fin (yyyy-MM-dd): ");
+            String fechaFinStr = scanner.nextLine();
+            LocalDate fechaFin = LocalDate.parse(fechaFinStr, formatter);
+            
+            // Validar que fecha fin sea posterior a fecha inicio
+            if (fechaFin.isBefore(fechaInicio) || fechaFin.isEqual(fechaInicio)) {
+                System.out.println("❌ Error: La fecha de fin debe ser posterior a la fecha de inicio");
+                return;
+            }
+            
+            Reserva reserva = hotel.crearReserva(nombre, apellido, email, telefono, cedula,
+                                               numeroHabitacion, fechaInicio, fechaFin);
+            
+            System.out.println("✅ Reserva creada exitosamente!");
+            System.out.println("📋 Detalles de la reserva:");
+            System.out.println(reserva);
+            
+        } catch (NumberFormatException e) {
+            System.out.println("❌ Error: Número de habitación inválido");
+        } catch (DateTimeParseException e) {
+            System.out.println("❌ Error: Formato de fecha inválido (use yyyy-MM-dd)");
+        } catch (ClienteException e) {
+            System.out.println("❌ Error: " + e.getMessage());
+        }
+    }
+    
+    private static void mostrarHabitacionesPorTipo() {
+        System.out.println("\n🏷️ BUSCAR HABITACIONES POR TIPO");
+        System.out.println("-".repeat(35));
+        
+        System.out.println("Tipos disponibles:");
+        System.out.println("1. SIMPLE");
+        System.out.println("2. DOBLE");
+        System.out.println("3. SUITE");
+        System.out.println("4. PRESIDENCIAL");
+        
+        System.out.print("Seleccione tipo (1-4): ");
+        
+        try {
+            int opcion = Integer.parseInt(scanner.nextLine());
+            TipoHabitacion tipo;
+            
+            switch (opcion) {
+                case 1: tipo = TipoHabitacion.SIMPLE; break;
+                case 2: tipo = TipoHabitacion.DOBLE; break;
+                case 3: tipo = TipoHabitacion.SUITE; break;
+                case 4: tipo = TipoHabitacion.PRESIDENCIAL; break;
+                default:
+                    System.out.println("❌ Opción inválida");
+                    return;
+            }
+            
+            List<Habitacion> habitaciones = hotel.buscarHabitacionesPorTipo(tipo);
+            
+            System.out.println("\n🏠 Habitaciones tipo " + tipo.getNombre() + ":");
+            if (habitaciones.isEmpty()) {
+                System.out.println("No hay habitaciones de este tipo");
+            } else {
+                habitaciones.forEach(System.out::println);
+            }
+            
+        } catch (NumberFormatException e) {
+            System.out.println("❌ Error: Opción inválida");
+        }
+    }
+    
+    private static void mostrarClientes() {
+        System.out.println("\n👥 CLIENTES REGISTRADOS");
+        System.out.println("-".repeat(30));
+        
+        var clientes = hotel.getClientes();
+        if (clientes.isEmpty()) {
+            System.out.println("No hay clientes registrados");
+        } else {
+            clientes.forEach(System.out::println);
+        }
+    }
+    
+    private static void demostrarFuncionalidades() {
+        System.out.println("\n🚀 DEMOSTRACIÓN DE FUNCIONALIDADES");
+        System.out.println("-".repeat(40));
+        
+        System.out.println("1. 📊 Mostrando estadísticas del hotel:");
+        hotel.mostrarEstadisticas();
+        
+        System.out.println("\n2. 🔍 Consultando disponibilidad de habitación 1 para hoy:");
+        boolean disponible = hotel.consultarDisponibilidad(1, LocalDate.now());
+        System.out.println("Resultado: " + (disponible ? "✅ Disponible" : "❌ No disponible"));
+        
+        System.out.println("\n3. 🏠 Buscando habitaciones tipo SUITE:");
+        List<Habitacion> suites = hotel.buscarHabitacionesPorTipo(TipoHabitacion.SUITE);
+        suites.forEach(System.out::println);
+        
+        System.out.println("\n4. 📋 Total de habitaciones: " + hotel.getTotalHabitaciones());
+        System.out.println("5. 📝 Total de reservas: " + hotel.getReservas().size());
+        System.out.println("6. 👥 Total de clientes: " + hotel.getClientes().size());
+        
+        System.out.println("\n✨ Demostración completada!");
+    }
+    
+    private static void inicializarDatosEjemplo() {
+        System.out.println("📝 Inicializando datos de ejemplo...");
+        
+        try {
+            // Crear algunas reservas de ejemplo
+            hotel.crearReserva("Juan", "Pérez", "juan@email.com", "0999123456", "1234567890",
+                             1, LocalDate.now().plusDays(1), LocalDate.now().plusDays(3));
+            
+            hotel.crearReserva("María", "García", "maria@email.com", "0987654321", "0987654321",
+                             4, LocalDate.now().plusDays(5), LocalDate.now().plusDays(7));
+            
+            hotel.crearReserva("Carlos", "López", "carlos@email.com", "0912345678", "1122334455",
+                             7, LocalDate.now().plusDays(10), LocalDate.now().plusDays(15));
+            
+            System.out.println("✅ Datos de ejemplo creados exitosamente!");
+            
+        } catch (ClienteException e) {
+            System.out.println("⚠️ Error al crear datos de ejemplo: " + e.getMessage());
+        }
     }
 }
